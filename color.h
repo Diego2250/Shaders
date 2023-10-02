@@ -19,10 +19,10 @@ struct Color {
     }
 
     Color(float red, float green, float blue, float alpha = 1.0f) {
-        r = std::clamp(static_cast<Uint8>(red * 255), Uint8(0), Uint8(255));
-        g = std::clamp(static_cast<Uint8>(green * 255), Uint8(0), Uint8(255));
-        b = std::clamp(static_cast<Uint8>(blue * 255), Uint8(0), Uint8(255));
-        a = std::clamp(static_cast<Uint8>(alpha * 255), Uint8(0), Uint8(255));
+        r = static_cast<Uint8>(std::min(std::max(red * 255, 0.0f), 255.0f));
+        g = static_cast<Uint8>(std::min(std::max(green * 255, 0.0f), 255.0f));
+        b = static_cast<Uint8>(std::min(std::max(blue * 255, 0.0f), 255.0f));
+        a = static_cast<Uint8>(std::min(std::max(alpha * 255, 0.0f), 255.0f));
     }
 
     // Overload the + operator to add colors
