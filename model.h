@@ -5,7 +5,8 @@
 enum ShaderType {
     ROCOSO,
     GASEOSO,
-    ESTRELLA
+    ESTRELLA,
+    LUNA
 };
 
 class Model {

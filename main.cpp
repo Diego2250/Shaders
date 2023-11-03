@@ -95,6 +95,9 @@ void render() {
                 case ESTRELLA:
                     fragmentShader = estrella;
                     break;
+                case LUNA:
+                    fragmentShader = Luna;
+                    break;
                 default:
                     std::cerr << "Error: Shader no reconocido." << std::endl;
                     break;
@@ -119,7 +122,7 @@ glm::mat4 createViewportMatrix(size_t screenWidth, size_t screenHeight) {
 }
 
 int SDL_main(int argc, char* argv[]) {
-    ShaderType currentShader = ROCOSO;
+    ShaderType currentShader = GASEOSO;
 
     if (!init()) {
         return 1;
@@ -207,14 +210,23 @@ int SDL_main(int argc, char* argv[]) {
                 camera.upVector        // The up vector defining the camera's orientation
         );
 
-        // Model 1
-        Model model1;
-        model1.modelMatrix = glm::mat4(1);
-        model1.vertices = vertexBufferObject;
-        model1.uniforms = uniforms;
-        model1.currentShader = currentShader;
-        models.push_back(model1); // Add model1 to models vector
+        Model planeta;
+        planeta.modelMatrix = glm::mat4(1);
+        planeta.vertices = vertexBufferObject;
+        planeta.uniforms = uniforms;
+        planeta.currentShader = currentShader;
+        models.push_back(planeta); // Add planeta to models vector
 
+        if (planeta.currentShader == ROCOSO) {
+            Model luna;
+            luna.modelMatrix = glm::mat4(1);
+            luna.vertices = vertexBufferObject;
+            luna.currentShader = LUNA;
+            luna.uniforms = uniforms;
+            luna.uniforms.model = glm::translate(luna.uniforms.model, glm::vec3(1.5f, 0.0f, 0.0f))
+                                    * glm::scale(luna.uniforms.model, glm::vec3(0.2f, 0.2f, 0.2f));
+            models.push_back(luna); // Add luna to models vector
+        }
 
 
         SDL_Event event;

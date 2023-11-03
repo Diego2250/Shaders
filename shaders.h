@@ -144,6 +144,37 @@ Fragment estrella(Fragment& fragment) {
     return fragment;
 }
 
+Fragment Luna(Fragment& fragment) {
+    Color color;
+
+    // Definir los colores del planeta
+    glm::vec3 rockColor = glm::vec3(0.7f, 0.7f, 0.7f);
+    glm::vec3 surfaceColor = glm::vec3(0.4f, 0.4f, 0.4f);
+
+    // Obtener las coordenadas UV
+    glm::vec2 uv = glm::vec2(fragment.originalPos.x, fragment.originalPos.y);
+
+    // Generar ruido para simular la textura del planeta
+    FastNoiseLite noiseGenerator;
+    noiseGenerator.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
+
+    float offsetX = 5000.0f;
+    float offsetY = 8000.0f;
+    float scale = 500.0f;
+
+    float noiseValue = noiseGenerator.GetNoise((uv.x + offsetX) * scale, (uv.y + offsetY) * scale);
+    noiseValue = (noiseValue + 1.0f) * 0.5f; // Mapear [-1, 1] a [0, 1]
+
+    // Combinar los colores del planeta con el ruido
+    glm::vec3 finalColor = glm::mix(rockColor, surfaceColor, noiseValue);
+
+    color = Color(finalColor.x, finalColor.y, finalColor.z);
+
+    fragment.color = color * fragment.intensity;
+
+    return fragment;
+}
+
 
 
 
