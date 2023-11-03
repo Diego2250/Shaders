@@ -80,33 +80,23 @@ Fragment planetaRocoso(Fragment& fragment) {
 Fragment giganteGaseoso(Fragment& fragment) {
     Color color;
 
-    // Definir los colores del gigante gaseoso
-    glm::vec3 mainColor = glm::vec3(0.5f, 0.5f, 0.5f);
-    glm::vec3 cloudColor = glm::vec3(0.8f, 0.8f, 0.8f);
-
     // Obtener las coordenadas UV
     glm::vec2 uv = glm::vec2(fragment.originalPos.x * 2.0 - 1.0, fragment.originalPos.y * 2.0 - 1.0);
-
-    // Frecuencia y amplitud de las ondas en el gigante gaseoso
-    float frequency = 10.0; // Ajustar la frecuencia de las líneas
-    float amplitude = 0.2;  // Ajustar la amplitud de las líneas
 
     FastNoiseLite noiseGenerator;
     noiseGenerator.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
 
-    float offsetX = 10000.0f;
-    float offsetY = 10000.0f;
+    float offsetX = 1000.0f;
+    float offsetY = 1000.0f;
     float scale = 900.0f;
 
-    // Generar el valor de ruido
+    // Generar el valor de ruido para simular el movimiento del gas
     float noiseValue = noiseGenerator.GetNoise((uv.x + offsetX) * scale, (uv.y + offsetY) * scale);
-    noiseValue = (noiseValue + 1.0f) * 0.5f; // Mapear [-1, 1] a [0, 1]
+    noiseValue = (noiseValue + 1.2f) * 0.9f; // Mapear [-1, 1] a [0, 1]
 
-    // Calcular el valor sinusoide para crear líneas
-    float sinValue = glm::sin(uv.y * frequency) * amplitude;
+    // Generar colores diferentes para las "nubes de gas" en función de la posición y el ruido
+    glm::vec3 cloudColor = glm::vec3(0.5 + uv.x + noiseValue, 0.5 + uv.y + noiseValue, 0.5 - uv.x + noiseValue);
 
-    // Combinar el color base con las líneas sinusoide
-    cloudColor = mainColor + glm::vec3(sinValue);
 
     color = Color(cloudColor.x, cloudColor.y, cloudColor.z);
 
