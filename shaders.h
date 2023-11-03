@@ -175,6 +175,125 @@ Fragment Luna(Fragment& fragment) {
     return fragment;
 }
 
+Fragment planetaVolcanico(Fragment& fragment) {
+    Color color;
+
+    // Definir los colores del planeta volcánico
+    glm::vec3 lavaColor = glm::vec3(1.0f, 0.1f, 0.0f);
+    glm::vec3 rockColor = glm::vec3(0.6f, 0.6f, 0.6f);
+
+    // Obtener las coordenadas UV
+    glm::vec2 uv = glm::vec2(fragment.originalPos.x, fragment.originalPos.y);
+
+    // Generar ruido para simular la textura del planeta
+    FastNoiseLite noiseGenerator;
+    noiseGenerator.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
+
+    float offsetX = 5000.0f;
+    float offsetY = 8000.0f;
+    float scale = 500.0f;
+
+    float noiseValue = noiseGenerator.GetNoise((uv.x + offsetX) * scale, (uv.y + offsetY) * scale);
+    noiseValue = (noiseValue + 1.0f) * 0.5f; // Mapear [-1, 1] a [0, 1]
+
+    // Simular explosiones en la lava mediante variaciones de intensidad
+    float intensity = 1.0f + noiseValue * 0.2f; // Añadir variación de intensidad
+
+    // Combina los colores de lava y roca con el ruido y la intensidad
+    glm::vec3 finalColor = glm::mix(rockColor, lavaColor, noiseValue);
+
+    color = Color(finalColor.x, finalColor.y, finalColor.z);
+
+    fragment.color = color * intensity;
+
+    return fragment;
+}
+
+
+Fragment planetaCristal(Fragment& fragment) {
+    Color color;
+
+    // Definir los colores del planeta de cristal
+    glm::vec3 crystalColor = glm::vec3(0.0f, 0.5f, 1.0f);
+
+    // Obtener las coordenadas UV
+    glm::vec2 uv = glm::vec2(fragment.originalPos.x, fragment.originalPos.y);
+
+    // Generar ruido fractal para simular la textura del planeta
+    FastNoiseLite noiseGenerator;
+    noiseGenerator.SetNoiseType(FastNoiseLite::NoiseType_OpenSimplex2);
+    noiseGenerator.SetFractalType(FastNoiseLite::FractalType_FBm);
+    noiseGenerator.SetFractalOctaves(6);
+    noiseGenerator.SetFractalLacunarity(2.0f);
+    noiseGenerator.SetFractalGain(0.5f);
+
+    float offsetX = 5000.0f;
+    float offsetY = 8000.0f;
+    float scale = 500.0f;
+
+    // Generar valores de ruido para la textura del planeta
+    float noiseValue = noiseGenerator.GetNoise((uv.x + offsetX) * scale, (uv.y + offsetY) * scale);
+    noiseValue = (noiseValue + 1.0f) * 0.5f; // Mapear [-1, 1] a [0, 1]
+
+    // Combina el color de cristal con el ruido
+    glm::vec3 finalColor = crystalColor * noiseValue;
+
+    color = Color(finalColor.x, finalColor.y, finalColor.z);
+
+    fragment.color = color * fragment.intensity;
+
+    return fragment;
+}
+
+
+Fragment planetaHielo(Fragment& fragment) {
+    Color color;
+
+    // Definir el color base del planeta de hielo (celeste)
+    glm::vec3 baseColor = glm::vec3(0.7f, 0.9f, 1.0f);
+
+    // Obtener las coordenadas UV
+    glm::vec2 uv = glm::vec2(fragment.originalPos.x, fragment.originalPos.y);
+
+    // Generar ruido para simular la textura del planeta
+    FastNoiseLite noiseGenerator;
+    noiseGenerator.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
+
+    float offsetX = 5000.0f;
+    float offsetY = 8000.0f;
+    float scale = 500.0f;
+
+    // Generar valores de ruido para la textura del planeta
+    float noiseValue = noiseGenerator.GetNoise((uv.x + offsetX) * scale, (uv.y + offsetY) * scale);
+    noiseValue = (noiseValue + 1.0f) * 0.5f; // Mapear [-1, 1] a [0, 1]
+
+    // Combina el color base con el ruido
+    glm::vec3 finalColor = baseColor * noiseValue;
+
+    // Añadir elementos que se mueven utilizando el tiempo
+    float time = SDL_GetTicks() / 1000.0f; // Obtener el tiempo en segundos
+
+    // Generar elementos que se mueven más rápido
+    glm::vec3 movingElements = glm::vec3(
+            glm::sin(time * 2.0f) * 0.1f,
+            glm::cos(time * 1.4f) * 0.1f,
+            glm::sin(time * 1.0f) * 0.1f
+    );
+
+    finalColor += movingElements;
+
+    color = Color(finalColor.x, finalColor.y, finalColor.z);
+
+    fragment.color = color * fragment.intensity;
+
+    return fragment;
+}
+
+
+
+
+
+
 
 
 

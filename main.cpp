@@ -98,6 +98,15 @@ void render() {
                 case LUNA:
                     fragmentShader = Luna;
                     break;
+                case VOLCANICO:
+                    fragmentShader = planetaVolcanico;
+                    break;
+                case CRISTAL:
+                    fragmentShader = planetaCristal;
+                    break;
+                case HIELO:
+                    fragmentShader = planetaHielo;
+                    break;
                 default:
                     std::cerr << "Error: Shader no reconocido." << std::endl;
                     break;
@@ -122,7 +131,7 @@ glm::mat4 createViewportMatrix(size_t screenWidth, size_t screenHeight) {
 }
 
 int SDL_main(int argc, char* argv[]) {
-    ShaderType currentShader = GASEOSO;
+    ShaderType currentShader = VOLCANICO;
 
     if (!init()) {
         return 1;
