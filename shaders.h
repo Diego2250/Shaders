@@ -36,26 +36,33 @@ Vertex vertexShader(const Vertex& vertex, const Uniform& uniforms) {
 Fragment planetaRocoso(Fragment& fragment) {
     Color color;
 
-    // Definir los colores del planeta
-    glm::vec3 rockColor = glm::vec3(0.7f, 0.7f, 0.7f);
+    // Define colores base para las rocas y la superficie
     glm::vec3 surfaceColor = glm::vec3(0.4f, 0.4f, 0.4f);
+    glm::vec3 rockColor = glm::vec3(0.6f, 0.6f, 0.6f);
+    glm::vec3 rocosaColor = glm::vec3(0.2f, 0.2f, 0.2f); // Color de la textura rocosa
 
-    // Obtener las coordenadas UV
+    // Obtén las coordenadas UV
     glm::vec2 uv = glm::vec2(fragment.originalPos.x, fragment.originalPos.y);
 
-    // Generar ruido para simular la textura del planeta
+    // Genera ruido para simular la textura del planeta
     FastNoiseLite noiseGenerator;
     noiseGenerator.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
 
-    float offsetX = 5000.0f;
-    float offsetY = 8000.0f;
-    float scale = 500.0f;
+    // Offset y escala para generar variaciones en las caras del planeta
+    float offsetX = uv.x * 200.0f;
+    float offsetY = uv.y * 200.0f;
+    float scale = 100.0f;
 
+    // Genera valores de ruido para las caras del planeta
     float noiseValue = noiseGenerator.GetNoise((uv.x + offsetX) * scale, (uv.y + offsetY) * scale);
-    noiseValue = (noiseValue + 1.0f) * 0.5f; // Mapear [-1, 1] a [0, 1]
+    noiseValue = (noiseValue + 1.2f) * 0.7f; // Mapear [-1, 1] a [0, 1]
 
-    // Combinar los colores del planeta con el ruido
-    glm::vec3 finalColor = glm::mix(rockColor, surfaceColor, noiseValue);
+    // Combina los colores base con el ruido
+    glm::vec3 surfaceFinalColor = glm::mix(surfaceColor, rockColor, noiseValue); // Color de la superficie
+    glm::vec3 rocosaFinalColor = glm::mix(rockColor, rocosaColor, noiseValue); // Textura rocosa
+
+    // Interpola entre la superficie y la textura rocosa
+    glm::vec3 finalColor = glm::mix(surfaceFinalColor, rocosaFinalColor, noiseValue);
 
     color = Color(finalColor.x, finalColor.y, finalColor.z);
 
@@ -63,6 +70,10 @@ Fragment planetaRocoso(Fragment& fragment) {
 
     return fragment;
 }
+
+
+
+
 
 
 // Shader para el planeta gaseoso
@@ -105,7 +116,7 @@ Fragment giganteGaseoso(Fragment& fragment) {
 }
 
 // Shader para la estrella
-Fragment estrellaCreativa(Fragment& fragment) {
+Fragment estrella(Fragment& fragment) {
     Color color;
 
     // Genera colores aleatorios para la estrella
