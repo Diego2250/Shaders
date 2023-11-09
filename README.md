@@ -36,3 +36,9 @@ Este programa es un generador de shaders para representar diferentes tipos de pl
 
   <img src="https://github.com/Diego2250/Shaders/assets/77738746/a96deb88-1794-40db-8177-747884f00519" width="300">
 
+### Rubrica
+- [Criterio subjetivo] 30 puntos según la creatividad de su diseño.
+- 40 puntos según la complejidad de sus shaders que creen (en nuestro sistema, la tierra sería el más complejo y urano el más simple)
+  - Pueden suponer 10 puntos por cada “capa” del shader que afecte el color. 4 capas les daría todos los puntos.
+- 10 puntos por cada planeta extra que diseñen más allá de los 3 requeridos por el ejercicio para un máximo de 30 puntos
+- 20 puntos por implementar una luna en un planeta rocoso
